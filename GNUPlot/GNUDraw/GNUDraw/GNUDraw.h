@@ -1,34 +1,22 @@
 #pragma once
 #include <vector>
-#include <string>
 #include <iostream>
 #include <fstream>
-#include <iomanip>
-#include <sstream>
+#include "Primitive.h"
 
-class Collumn 
-{
-public:
-  Collumn() = default;
-  Collumn(const std::string& iName);
-  Collumn(const std::string& iName, const std::vector<double>& iValues);
-  size_t Size() const;
-
-  friend class GNUDrawer;
-private:
-  std::vector<double> _values = {};
-  std::string _name;
-};
 
 class GNUDrawer
 {
 public:
   GNUDrawer() = default;
   void Draw() const;
-  void AddCollumn(const Collumn& iCollumn);
-  void WriteToFile(const std::string& iFile) const;
+  void Add(const PrimitivePtr& iPrimitive);
 private:
+  void DrawPrimitives(FILE* iPipe) const;
 
-  size_t _collumnSize = 0;
-  std::vector<Collumn> _collumn = {};
+  FILE* PreparePipe() const;
+  void PreparePlot(FILE* iPipe) const;
+  void ClosePipe(FILE* iPipe) const;
+
+  std::vector<PrimitivePtr> _primitives = {};
 };

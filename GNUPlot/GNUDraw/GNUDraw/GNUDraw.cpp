@@ -1,69 +1,40 @@
 #include "GNUDraw.h"
 
-Collumn::Collumn(const std::string & iName)
-  : _name(iName)
-{
-}
-
-Collumn::Collumn(const std::string & iName, const std::vector<double>& iValues)
-  : _name(iName), _values(iValues)
-{
-}
-
-size_t Collumn::Size() const
-{
-  return _values.size();
-}
-
 void GNUDrawer::Draw() const
 {
-  WriteToFile("tmp.json");
+  FILE* gPipe = PreparePipe();
+  PreparePlot(gPipe);
+  DrawPrimitives(gPipe);
+  _pclose(gPipe);
+}
 
-  FILE *gpipe = _popen("gnuplot.exe -persist", "w");
-  if (!gpipe)
+void GNUDrawer::Add(const PrimitivePtr& iPrimitive)
+{
+  _primitives.push_back(iPrimitive);
+}
+
+void GNUDrawer::DrawPrimitives(FILE * iPipe) const
+{
+  for (auto it = _primitives.begin(); it != _primitives.end(); ++it) {
+    (*it)->Draw(iPipe);
+  }
+}
+
+FILE * GNUDrawer::PreparePipe() const
+{
+  FILE *gPipe = _popen("gnuplot.exe -persist", "w");
+  if (!gPipe)
     throw "Pipe creation error";
-
-  fprintf(gpipe, "set terminal win\n");
-  fprintf(gpipe, "set grid xtics ytics mxtics mytics\n");
-  for (size_t i = 1; i < _collumn.size(); ++i) {
-    std::stringstream command;
-    if (i > 1)
-      command << "re";
-    command << "plot \"tmp.json\" u 1:" << i+1 << " w l t '" << _collumn[i]._name.data() << "(x)'\n";
-    fprintf(gpipe, command.str().data());
-  }
-  fprintf(gpipe, "exit\n");
-
-  _pclose(gpipe);
-  std::remove("tmp.json");
+  return gPipe;
 }
 
-void GNUDrawer::AddCollumn(const Collumn & iCollumn)
+void GNUDrawer::PreparePlot(FILE * iPipe) const
 {
-  if (_collumn.empty())
-    _collumnSize = iCollumn.Size();
-  else if (iCollumn.Size() != _collumnSize)
-    throw "Collumn sizes are not equal";
-
-  _collumn.push_back(iCollumn);
+  fprintf(iPipe, "set terminal win\n");
+  fprintf(iPipe, "set grid xtics ytics mxtics mytics\n");
+  fprintf(iPipe, "plot 0 notitle\n");
 }
 
-void GNUDrawer::WriteToFile(const std::string & iFile) const
+void GNUDrawer::ClosePipe(FILE * iPipe) const
 {
-  std::ofstream fstream;
-  fstream.open(iFile.data(), 'w');
-  if (!fstream)
-    throw "Can not open file";
-
-  for (auto it = _collumn.begin(); it != _collumn.end(); ++it)
-    fstream << std::left << std::setw(20) << it->_name << " ";
-  fstream << std::endl;
-
-  for (size_t i = 0; i < _collumnSize; ++i) {
-    for (auto it = _collumn.begin(); it != _collumn.end(); ++it)
-      fstream << std::left << std::setw(20) << it->_values[i] << " ";
-    fstream << std::endl;
-  }
-
-  fstream.close();
 }
