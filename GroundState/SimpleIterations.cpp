@@ -1,7 +1,8 @@
 #include "SimpleIterations.h"
 #include "Utils.h"
+#include <thread>
 
-SimpleIterationsPtr SimpleIterations::Construct(double(*iFunction)(double), double iX0)
+SimpleIterationsPtr SimpleIterations::Construct(std::function<double(double)> iFunction, double iX0)
 {
   return SimpleIterationsPtr(new SimpleIterations(iFunction,iX0));
 }
@@ -19,20 +20,16 @@ double SimpleIterations::Solve(GNUDrawer & iDrawer)
 
     i++;
     iDrawer.Add(VerticalLine::Construct(xn1));
-    iDrawer.Add(Formula::Construct(std::to_string(xn2), std::to_string(i)));
+    iDrawer.Add(Formula::Construct(std::to_string(xn2), "iter" + std::to_string(i)));
   }
   return xn2;
 }
 
 void SimpleIterations::DrawPreparing(GNUDrawer & iDrawer)
 {
-  auto range = Generator::GenerateRange(_x0 - 100, _x0 + 100, 0.01);
-  auto x = Generator::GenerateArray([](double iX) {return iX;}, range);
-
-  std::vector<double> phiValues = {};
-  for (auto it = range.begin(); it != range.end(); ++it)
-    phiValues.push_back(Phi(*it));
-
+  auto range = Utils::GenerateRange(_x0 - 100, _x0 + 100, 0.01);
+  auto x = Utils::GenerateArray([](double iX) {return iX;}, range);
+  auto phiValues = Utils::GenerateArray([this](double iX) {return this->Phi(iX);}, range);
   auto arr = Arrays::Construct();
   arr->Add("x", range);
   arr->Add("X", x);
@@ -41,7 +38,7 @@ void SimpleIterations::DrawPreparing(GNUDrawer & iDrawer)
   iDrawer.Add(arr);
 }
 
-SimpleIterations::SimpleIterations(double(*iFunction)(double), double iX0)
+SimpleIterations::SimpleIterations(std::function<double(double)> iFunction, double iX0)
   : _function(iFunction), _x0(iX0)
 {
   _k = 0.1;

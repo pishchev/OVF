@@ -8,14 +8,14 @@ typedef std::shared_ptr<Newtone> NewtonePtr;
 class Newtone : public Method
 {
 public:
-  static NewtonePtr Construct(double(*iFunction)(double), double iX0);
+  static NewtonePtr Construct(std::function<double(double)> iFunction, double iX0);
   virtual double Solve(GNUDrawer& iDrawer);
   virtual void DrawPreparing(GNUDrawer& iDrawer);
 
 private:
-  Newtone(double(*iFunction)(double), double iX0);
+  Newtone(std::function<double(double)> iFunction, double iX0);
   double Phi(double iX);
   double _x0;
-  double(*_function)(double);
+  std::function<double(double)> _function;
 };
 

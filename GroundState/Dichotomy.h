@@ -8,13 +8,13 @@ typedef std::shared_ptr<Dichotomy> DichotomyPtr;
 class Dichotomy : public Method
 {
 public:
-  static DichotomyPtr Construct(double(*iFunction)(double), double iLeftBoard, double iRightBoard);
+  static DichotomyPtr Construct(std::function<double(double)> iFunction, double iLeftBoard, double iRightBoard);
   bool ValidateFunction();
   virtual double Solve(GNUDrawer& iDrawer);
   virtual void DrawPreparing(GNUDrawer& iDrawer);
 
 private:
-  Dichotomy(double(*iFunction)(double), double iLeftBoard, double iRightBoard);
+  Dichotomy(std::function<double(double)> iFunction, double iLeftBoard, double iRightBoard);
   double _left, _right;
-  double(*_function)(double);
+  std::function<double(double)> _function;
 };

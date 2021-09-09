@@ -3,6 +3,7 @@
 #include "Dichotomy.h"
 #include "SimpleIterations.h"
 #include "Newtone.h"
+#include <functional>
 
 double U0 = 1000;
 double a = 10;
@@ -22,16 +23,16 @@ std::string strA = std::to_string(a);
 std::string strU0 = std::to_string(U0);
 std::string GroundStateFunction = "1/tan(sqrt(2*"+ strA +"*"+ strA +"*"+strU0+"*(1 + x/"+strU0+"))) - sqrt(-" + strU0 + "/x -1)";
 
-void OutputResult(double (*iFunction)(double), double iValue)
+void OutputResult(std::function<double(double)> iFunc, double iValue)
 {
-  std::cout << "X = " << iValue << "; Y(X) = " << iFunction(iValue) << std::endl;
+  std::cout << "X = " << iValue << "; Y(X) = " << iFunc(iValue) << std::endl;
 }
 
 int main()
 {
   GNUDrawer gnuDrawer;
-
-  double(*function)(double) = GroundStateEnergy;
+  
+  std::function<double(double)> function = GroundStateEnergy;
 
   //Solver solver(Dichotomy::Construct(function, -4.7 , -4), gnuDrawer);
   //Solver solver(SimpleIterations::Construct(function, -4.7), gnuDrawer);
@@ -41,7 +42,5 @@ int main()
   
   gnuDrawer.Add(Formula::Construct(GroundStateFunction, "function"));
   gnuDrawer.Draw();
-  
-  system("pause");
   return 0;
 }

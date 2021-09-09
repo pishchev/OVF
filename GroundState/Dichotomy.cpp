@@ -1,11 +1,11 @@
 #include "Dichotomy.h"
 
-Dichotomy::Dichotomy(double(*iFunction)(double), double iLeftBoard, double iRightBoard)
+Dichotomy::Dichotomy(std::function<double(double)> iFunction, double iLeftBoard, double iRightBoard)
   : _left(iLeftBoard), _right(iRightBoard), _function(iFunction)
 {
 }
 
-DichotomyPtr Dichotomy::Construct(double(*iFunction)(double), double iLeftBoard, double iRightBoard)
+DichotomyPtr Dichotomy::Construct(std::function<double(double)> iFunction, double iLeftBoard, double iRightBoard)
 {
   return DichotomyPtr(new Dichotomy(iFunction, iLeftBoard, iRightBoard));
 }
@@ -36,8 +36,8 @@ void Dichotomy::DrawPreparing(GNUDrawer & iDrawer)
   iDrawer.Add(VerticalLine::Construct(_left));
   iDrawer.Add(VerticalLine::Construct(_right));
 
-  auto range = Generator::GenerateRange(_left, _right, 0.1);
-  auto funcValues = Generator::GenerateArray(_function, range);
+  auto range = Utils::GenerateRange(_left, _right, 0.1);
+  auto funcValues = Utils::GenerateArray(_function, range);
   auto arr = Arrays::Construct();
   arr->Add("x", range);
   arr->Add("function", funcValues);

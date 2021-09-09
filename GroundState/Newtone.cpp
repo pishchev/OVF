@@ -1,7 +1,7 @@
 #include "Newtone.h"
 #include "Utils.h"
 
-NewtonePtr Newtone::Construct(double(*iFunction)(double), double iX0)
+NewtonePtr Newtone::Construct(std::function<double(double)> iFunction, double iX0)
 {
   return NewtonePtr(new Newtone(iFunction,iX0));
 }
@@ -19,7 +19,7 @@ double Newtone::Solve(GNUDrawer & iDrawer)
 
     i++;
     std::string strX = std::to_string(xn2);
-    std::string strTan = std::to_string(Utils::Df(_function, xn1, 0.0001));
+    std::string strTan = std::to_string(Utils::Derivative(_function, xn1, 0.0001));
     std::string count = std::to_string(i);
 
     xn1 = xn2;
@@ -32,20 +32,20 @@ double Newtone::Solve(GNUDrawer & iDrawer)
 
 void Newtone::DrawPreparing(GNUDrawer & iDrawer)
 {
-  auto range = Generator::GenerateRange(_x0 - 3, _x0 + 1, 0.01);
-  auto funcValues = Generator::GenerateArray(_function, range);
+  auto range = Utils::GenerateRange(_x0 - 3, _x0 + 1, 0.01);
+  auto funcValues = Utils::GenerateArray(_function, range);
   auto arr = Arrays::Construct();
   arr->Add("x", range);
   arr->Add("function", funcValues);
   //iDrawer.Add(arr);
 }
 
-Newtone::Newtone(double(*iFunction)(double), double iX0)
+Newtone::Newtone(std::function<double(double)> iFunction, double iX0)
   : _function(iFunction), _x0(iX0)
 {
 }
 
 double Newtone::Phi(double iX)
 {
-  return iX - _function(iX) / Utils::Df(_function, iX, 0.0001);
+  return iX - _function(iX) / Utils::Derivative(_function, iX, 0.0001);
 }
