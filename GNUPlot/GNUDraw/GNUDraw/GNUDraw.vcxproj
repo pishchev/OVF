@@ -125,7 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Arrays.h" />
     <ClInclude Include="Formula.h" />
-    <ClInclude Include="Generator.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="GNUDraw.h" />
     <ClInclude Include="GNUDrawLib.h" />
     <ClInclude Include="Primitive.h" />
@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClCompile Include="Arrays.cpp" />
     <ClCompile Include="Formula.cpp" />
-    <ClCompile Include="Generator.cpp" />
     <ClCompile Include="GNUDraw.cpp" />
     <ClCompile Include="VerticalLine.cpp" />
   </ItemGroup>

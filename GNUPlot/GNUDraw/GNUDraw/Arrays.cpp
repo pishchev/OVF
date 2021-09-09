@@ -59,11 +59,6 @@ void Arrays::Draw(FILE * iPipe) const
   DrawArrays(iPipe);
 }
 
-Arrays::~Arrays()
-{
-  std::remove(_tmpFileName.data());
-}
-
 void Arrays::DrawArrays(FILE * iPipe) const
 {
   for (size_t i = 1; i < _collumn.size(); ++i) {

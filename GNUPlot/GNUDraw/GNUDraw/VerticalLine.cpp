@@ -13,6 +13,6 @@ VerticalLinePtr VerticalLine::Construct(double iX)
 void VerticalLine::Draw(FILE * iPipe) const
 {
   std::stringstream command;
-  command << "set arrow from " << _x << ",-3 to " << _x << ",3 nohead \n";
+  command << "set arrow from " << _x << ",-10000 to " << _x << ",10000 nohead \n";
   fprintf(iPipe, command.str().data());
 }

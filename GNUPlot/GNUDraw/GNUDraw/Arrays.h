@@ -29,8 +29,6 @@ public:
   void WriteToFile(const std::string& iFile) const;
   virtual void Draw(FILE* iPipe) const;
 
-  ~Arrays();
-
   static size_t _arraySize;
 private:
   Arrays();

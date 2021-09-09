@@ -5,7 +5,6 @@ void GNUDrawer::Draw() const
   FILE* gPipe = PreparePipe();
   PreparePlot(gPipe);
   DrawPrimitives(gPipe);
-  _pclose(gPipe);
 }
 
 void GNUDrawer::Add(const PrimitivePtr& iPrimitive)
