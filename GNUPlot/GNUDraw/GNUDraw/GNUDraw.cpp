@@ -1,5 +1,10 @@
 #include "GNUDraw.h"
 
+GNUDrawer::GNUDrawer(const std::string & iName) 
+  : _winName(iName)
+{
+}
+
 void GNUDrawer::Draw() const
 {
   FILE* gPipe = PreparePipe();
@@ -10,6 +15,11 @@ void GNUDrawer::Draw() const
 void GNUDrawer::Add(const PrimitivePtr& iPrimitive)
 {
   _primitives.push_back(iPrimitive);
+}
+
+void GNUDrawer::LogScale(bool iLogScale)
+{
+  _logScale = iLogScale;
 }
 
 void GNUDrawer::DrawPrimitives(FILE * iPipe) const
@@ -29,7 +39,16 @@ FILE * GNUDrawer::PreparePipe() const
 
 void GNUDrawer::PreparePlot(FILE * iPipe) const
 {
-  fprintf(iPipe, "set terminal win\n");
+  if (_winName.empty())
+    fprintf(iPipe, "set terminal win\n");
+  else {
+    std::string setTerminal = "set terminal win title '" + _winName + "'\n";
+    fprintf(iPipe, setTerminal.data());
+  }
+  if (_logScale)
+  {
+    fprintf(iPipe, "set logscale x 2\n");
+  }
   fprintf(iPipe, "set grid xtics ytics mxtics mytics\n");
   fprintf(iPipe, "plot 0 notitle\n");
 }

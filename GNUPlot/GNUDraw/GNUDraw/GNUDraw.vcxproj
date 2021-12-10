@@ -32,7 +32,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -125,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Arrays.h" />
     <ClInclude Include="Formula.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="GNUDraw.h" />
     <ClInclude Include="GNUDrawLib.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Arrays.cpp" />
     <ClCompile Include="Formula.cpp" />
     <ClCompile Include="GNUDraw.cpp" />
+    <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="VerticalLine.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

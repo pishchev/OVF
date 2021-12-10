@@ -9,8 +9,10 @@ class GNUDrawer
 {
 public:
   GNUDrawer() = default;
+  GNUDrawer(const std::string& iName);
   void Draw() const;
   void Add(const PrimitivePtr& iPrimitive);
+  void LogScale(bool iLogScale);
 private:
   void DrawPrimitives(FILE* iPipe) const;
 
@@ -18,5 +20,8 @@ private:
   void PreparePlot(FILE* iPipe) const;
   void ClosePipe(FILE* iPipe) const;
 
+  bool _logScale = false;
+
+  std::string _winName;
   std::vector<PrimitivePtr> _primitives = {};
 };

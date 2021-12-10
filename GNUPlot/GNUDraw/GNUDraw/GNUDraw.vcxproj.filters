@@ -42,6 +42,9 @@
     <ClInclude Include="Utils.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Файлы заголовков\Primitives</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GNUDraw.cpp">
@@ -54,6 +57,9 @@
       <Filter>Исходные файлы\Primitives</Filter>
     </ClCompile>
     <ClCompile Include="VerticalLine.cpp">
+      <Filter>Исходные файлы\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix.cpp">
       <Filter>Исходные файлы\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
